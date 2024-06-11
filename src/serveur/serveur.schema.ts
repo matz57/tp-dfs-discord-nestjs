@@ -5,10 +5,10 @@ export type ServeurDocument = Serveur & Document;
 
 @Schema()
 export class Serveur {
-  @Prop({ required: true })
+  @Prop({ required: true, minlength: 3, maxlength: 50 })
   nom: string;
 
-  @Prop()
+  @Prop({ maxlength: 100 })
   description: string;
 
   @Prop()
