@@ -12,6 +12,9 @@ export class Serveur {
   description: string;
 
   @Prop()
+  urlLogo: string;
+
+  @Prop()
   public: boolean;
 }
 
