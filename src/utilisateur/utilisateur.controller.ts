@@ -12,12 +12,20 @@ export class UtilisateurController {
 
   @Post('inscription')
   async inscription(@Body() createUtilisateurDto: any) {
+    //TODO : vérifier les donnée (regles mot de passe, email unique ...)
+
     return this.utilisateurService.create(createUtilisateurDto);
   }
 
   @Post('login')
-  async create(@Body() createUtilisateurDto: any) {
-    console.log(createUtilisateurDto);
+  async create(@Body() utilisateurDto: any) {
+    const utilisateur =
+      await this.utilisateurService.getByEmailAndClearPassword(
+        utilisateurDto.email,
+        utilisateurDto.password,
+      );
+
+    console.log(utilisateur);
 
     return '{"jwt": "le futur jwt"}';
   }
