@@ -37,4 +37,18 @@ export class UtilisateurService {
   async findAll(): Promise<Utilisateur[]> {
     return this.utilisateurModel.find().exec();
   }
+
+  async rejoindreServeur(
+    email: string,
+    idServeurArejoindre: number,
+  ): Promise<Utilisateur> {
+    //on ajoute le serveur a la liste des serveurs de l'utilsiateur
+    const utilisateur = await this.utilisateurModel.findOneAndUpdate(
+      { email: email },
+      { $addToSet: { serveurs: idServeurArejoindre } }, // $addToSet évite les duplications
+      { new: true }, // Retourner le document mis à jour
+    );
+
+    return utilisateur;
+  }
 }

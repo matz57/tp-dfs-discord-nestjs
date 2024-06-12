@@ -1,6 +1,7 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
 import { UtilisateurService } from './utilisateur.service';
 import { JwtService } from '@nestjs/jwt';
+import { AuthGuard } from 'src/auth.guard';
 
 @Controller()
 export class UtilisateurController {
@@ -34,5 +35,19 @@ export class UtilisateurController {
     };
 
     return await this.jwtService.signAsync(payload);
+  }
+
+  @Post('rejoindre-serveur')
+  @UseGuards(AuthGuard)
+  async rejoindreServeur(
+    @Body() serveurArejoindreDto: any,
+    @Request() requete,
+  ) {
+    const email = requete.user.sub;
+
+    return this.utilisateurService.rejoindreServeur(
+      email,
+      serveurArejoindreDto._id,
+    );
   }
 }
