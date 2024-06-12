@@ -1,9 +1,13 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { UtilisateurService } from './utilisateur.service';
+import { JwtService } from '@nestjs/jwt';
 
 @Controller()
 export class UtilisateurController {
-  constructor(private readonly utilisateurService: UtilisateurService) {}
+  constructor(
+    private readonly utilisateurService: UtilisateurService,
+    private readonly jwtService: JwtService,
+  ) {}
 
   // @Get()
   // findAll() {
@@ -25,8 +29,10 @@ export class UtilisateurController {
         utilisateurDto.password,
       );
 
-    console.log(utilisateur);
+    const payload = {
+      sub: utilisateur.email,
+    };
 
-    return '{"jwt": "le futur jwt"}';
+    return await this.jwtService.signAsync(payload);
   }
 }
