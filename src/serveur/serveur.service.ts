@@ -15,7 +15,7 @@ export class ServeurService {
     return createdServeur.save();
   }
 
-  async findAll(): Promise<Serveur[]> {
-    return this.serveurModel.find().exec();
+  async findAllPublic(): Promise<Serveur[]> {
+    return this.serveurModel.find({ public: true });
   }
 }

@@ -1,13 +1,24 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  UseGuards,
+  Request,
+} from '@nestjs/common';
 import { ServeurService } from './serveur.service';
+import { AuthGuard } from 'src/auth.guard';
 
 @Controller('serveur')
 export class ServeurController {
   constructor(private readonly serveurService: ServeurService) {}
 
   @Get()
-  findAll() {
-    return this.serveurService.findAll();
+  @UseGuards(AuthGuard)
+  findAll(@Request() requete) {
+    console.log(requete.user.sub);
+
+    return this.serveurService.findAllPublic();
   }
 
   @Post()
