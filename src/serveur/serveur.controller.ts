@@ -21,6 +21,12 @@ export class ServeurController {
     return this.serveurService.findAllPublic();
   }
 
+  @Get('/possede')
+  @UseGuards(AuthGuard)
+  findAllServerOfUser(@Request() requete) {
+    return this.serveurService.findAllServerOfUser(requete.user.sub);
+  }
+
   @Post()
   async create(@Body() createServeurDto: any) {
     return this.serveurService.create(createServeurDto);
