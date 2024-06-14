@@ -1,19 +1,15 @@
-// src/cats/cats.service.ts
-import { Injectable } from '@nestjs/common';
+// src/serveur/serveur.service.ts
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Serveur, ServeurDocument } from './serveur.schema';
-import {
-  Utilisateur,
-  UtilisateurDocument,
-} from 'src/utilisateur/utilisateur.schema';
+import { Utilisateur, UtilisateurDocument } from 'src/utilisateur/utilisateur.schema';
 
 @Injectable()
 export class ServeurService {
   constructor(
     @InjectModel(Serveur.name) private serveurModel: Model<ServeurDocument>,
-    @InjectModel(Utilisateur.name)
-    private utilisateurModel: Model<UtilisateurDocument>,
+    @InjectModel(Utilisateur.name) private utilisateurModel: Model<UtilisateurDocument>,
   ) {}
 
   async create(createdServeurDto: any): Promise<Serveur> {
@@ -33,5 +29,13 @@ export class ServeurService {
     });
 
     return serveurs;
+  }
+
+  async findById(id: string): Promise<Serveur> {
+    const serveur = await this.serveurModel.findById(id);
+    if (!serveur) {
+      throw new NotFoundException('Serveur not found');
+    }
+    return serveur;
   }
 }

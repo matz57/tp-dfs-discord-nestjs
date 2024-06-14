@@ -5,6 +5,7 @@ import {
   Post,
   UseGuards,
   Request,
+  Param,
 } from '@nestjs/common';
 import { ServeurService } from './serveur.service';
 import { AuthGuard } from 'src/auth.guard';
@@ -25,6 +26,12 @@ export class ServeurController {
   @UseGuards(AuthGuard)
   findAllServerOfUser(@Request() requete) {
     return this.serveurService.findAllServerOfUser(requete.user.sub);
+  }
+
+  @Get('/:id')
+  @UseGuards(AuthGuard)
+  async findById(@Param('id') id: string) {
+    return this.serveurService.findById(id);
   }
 
   @Post()
